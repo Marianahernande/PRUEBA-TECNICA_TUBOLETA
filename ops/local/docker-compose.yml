@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: ecommerce
+      MYSQL_USER: ecommerce
+      MYSQL_PASSWORD: ecommerce123
+      MYSQL_ROOT_PASSWORD: root
+    ports: ["3307:3306"]
+    healthcheck:
+      test: ["CMD","mysqladmin","ping","-h","127.0.0.1","-uroot","-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  webapi:
+    build:
+      context: ..
+      dockerfile: ../ECommerce.WebApi/Dockerfile
+    container_name: webapi
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_ENVIRONMENT: Development
+      # EF se toma de appsettings.Docker.json montado:
+    ports: ["8080:8080"]
+    volumes:
+      - ../ECommerce.WebApi/appsettings.Docker.json:/app/appsettings.Docker.json:ro
+
+volumes:
+  mysql_data:
