@@ -1,0 +1,9 @@
+﻿**/bin
+**/obj
+**/.vs
+**/.git
+**/.github
+**/node_modules
+*.user
+*.suo
+Dockerfile

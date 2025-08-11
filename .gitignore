@@ -1,0 +1,10 @@
+echo "bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+**/appsettings.*.local.json
+**/appsettings.Development.json
+docker-data/" > .gitignore
