@@ -189,6 +189,145 @@ https://localhost:5001/swagger
 Actualizar base de datos:
          dotnet ef database update
 
+
+----------------------------------------------------------------------------------------------------------------
+
+## 📬 Ejemplos de Requests y Responses
+
+### 1️⃣ Registro de usuario
+**Request**
+```http
+POST /api/auth/register
+Content-Type: application/json
+
+{
+  "username": "usuario_demo",
+  "email": "usuario@demo.com",
+  "password": "Contraseña123!",
+  "role": "User"
+}
+
+
+Response
+{
+  "id": "1f5a5b40-15a9-4f7f-9ac0-88b845dc1e65",
+  "username": "usuario_demo",
+  "email": "usuario@demo.com",
+  "role": "User",
+  "message": "Usuario registrado exitosamente"
+}
+
+
+
+
+2️⃣ Inicio de sesión:
+
+POST /api/auth/login
+Content-Type: application/json
+
+{
+  "email": "usuario@demo.com",
+  "password": "Contraseña123!"
+}
+
+Response
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp..."
+}
+
+3️⃣ Obtener perfil autenticado:
+
+Request
+
+GET /api/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp...
+
+
+Response:
+
+{
+  "id": "1f5a5b40-15a9-4f7f-9ac0-88b845dc1e65",
+  "username": "usuario_demo",
+  "email": "usuario@demo.com",
+  "role": "User"
+}
+
+
+4️⃣ Crear evento (solo Admin):
+
+
+Request
+
+POST /api/events
+Authorization: Bearer {token_de_admin}
+Content-Type: application/json
+
+{
+  "title": "Concierto de Rock",
+  "date": "2025-09-01T20:00:00",
+  "basePrice": 150,
+  "capacity": 500
+}
+
+Response
+
+{
+  "id": "c2f0e11e-1a09-4a47-b8ff-654fb015f345",
+  "title": "Concierto de Rock",
+  "date": "2025-09-01T20:00:00",
+  "basePrice": 150,
+  "capacity": 500,
+  "availableTickets": 500
+}
+
+5️⃣ Calcular precio dinámico
+Request
+POST /api/pricing/calculate
+Content-Type: application/json
+Authorization: Bearer {token}
+
+{
+  "basePrice": 150,
+  "demand": 0.65,
+  "timeFactor": 0.40,
+  "scarcityFactor": 0.30
+}
+
+Response
+
+{
+  "basePrice": 150,
+  "finalPrice": 192.5,
+  "details": {
+    "alpha": 0.3,
+    "beta": 0.2,
+    "gamma": 0.5,
+    "formula": "P = P0 × (1 + αD + βT + γS)"
+  }
+}
+
+6️⃣ Notificación (Microservicio)
+
+Request
+
+POST /api/notifications/send
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "message": "Compra confirmada para el evento Concierto de Rock"
+}
+
+Response
+
+{
+  "status": "ok",
+  "sentAt": "2025-08-11T21:00:00Z",
+  "message": "Compra confirmada para el evento Concierto de Rock"
+}
+
+
 ------------------------------------------------------------------------------------------------------------------
 📄 Licencia
 Proyecto creado para fines de prueba técnica a disposición de tuboleta.
